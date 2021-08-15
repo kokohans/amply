@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const User = require("../models/user_model");
 
-router.get("/", (req, res) => {
+const get_users = (req, res) => {
   User.find((err, user) => {
     if (err) {
       return res.json({
@@ -14,6 +14,8 @@ router.get("/", (req, res) => {
       err: null,
     });
   });
-});
+};
+
+router.get("/", get_users);
 
 module.exports = router;
