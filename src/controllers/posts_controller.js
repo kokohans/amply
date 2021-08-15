@@ -1,7 +1,10 @@
 const router = require("express").Router();
 
 router.get("/", (req, res) => {
-  res.send("ok from posts");
+  res.json({
+    message: "hello world",
+    err: null,
+  });
 });
 
 module.exports = router;
