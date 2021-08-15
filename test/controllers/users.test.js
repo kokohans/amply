@@ -9,45 +9,45 @@ chai.use(chaiHTTP);
 
 let server = require("../../src/app");
 
-describe("GET /api/v1/users", () => {
-  before((done) => {
-    User.deleteMany({}, (err) => {});
+describe("User Controller", () => {
+  describe("GET /api/v1/users", () => {
+    let response, error;
 
-    let userData = {
-      username: "kokohan",
-      email: "hans@gmail.com",
-      description: "this is my personal space",
-    };
+    before((done) => {
+      User.deleteMany({});
 
-    let newUser = new User(userData);
-    newUser.save();
-    done();
-  });
+      let userData = {
+        username: "kokohan",
+        email: "hans@gmail.com",
+        description: "this is my personal space",
+      };
 
-  after((done) => {
-    User.deleteMany({}, (err) => {
-      done();
+      let newUser = new User(userData);
+      newUser.save();
+
+      chai
+        .request(server)
+        .get(user_path)
+        .end((err, res) => {
+          error = err;
+          response = res;
+          done();
+        });
     });
-  });
 
-  it("should return 200 OK", (done) => {
-    chai
-      .request(server)
-      .get(user_path)
-      .end((err, res) => {
-        expect(res.statusCode).to.equals(200);
+    after((done) => {
+      User.deleteMany({}, (err) => {
         done();
       });
-  });
+    });
 
-  it("should return all users with JSON", (done) => {
-    chai
-      .request(server)
-      .get(user_path)
-      .end((err, res) => {
-        expect(res.body).to.have.property("message");
-        expect(res.body["message"].length).to.eq(1);
-        done();
-      });
+    it("should return 200 OK", () => {
+      expect(response.statusCode).to.equals(200);
+    });
+
+    it("should return all users with JSON", () => {
+      expect(response.body["message"]).to.not.null;
+      expect(response.body["message"].length).to.eq(1);
+    });
   });
 });
