@@ -38,7 +38,19 @@ const insert_user = (req, res) => {
   });
 };
 
+const find_one_user = (req, res) => {
+  let uid = req.params["uid"];
+  User.findById(uid, (err, user) => {
+    if (err) {
+      return res.status(404).json({ message: "not found", err: true });
+    } else {
+      return res.status(200).json({ message: user, err: false });
+    }
+  });
+};
+
 router.get("/", get_users);
+router.get("/:uid", find_one_user);
 router.post("/", insert_user);
 
 module.exports = router;
