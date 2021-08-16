@@ -26,6 +26,7 @@ const insert_user = (req, res) => {
     email: email,
     description: description,
   });
+
   new_user.save((err, res_query) => {
     if (err) {
       return res.status(400).json({
@@ -40,6 +41,7 @@ const insert_user = (req, res) => {
 
 const find_one_user = (req, res) => {
   let uid = req.params["uid"];
+
   User.findById(uid, (err, user) => {
     if (err) {
       return res.status(404).json({ message: "not found", err: true });

@@ -9,7 +9,7 @@ chai.use(chaiHTTP);
 let server = require("../../src/app");
 
 describe("User Controller", () => {
-  before(() => {
+  before((done) => {
     User.deleteMany({});
 
     let userData = {
@@ -19,7 +19,9 @@ describe("User Controller", () => {
     };
 
     let newUser = new User(userData);
-    newUser.save();
+    newUser.save((err) => {
+      done();
+    });
   });
 
   after((done) => {
