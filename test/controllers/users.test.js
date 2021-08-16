@@ -94,7 +94,7 @@ describe("User Controller", () => {
           });
       });
 
-      it("should return 404 OK", () => {
+      it("should return 404 NOT FOUND", () => {
         expect(response.statusCode).to.equals(404);
       });
 
@@ -107,56 +107,58 @@ describe("User Controller", () => {
   describe("POST /api/v1/users", () => {
     let response, error;
     const user_path = "/api/v1/users";
+    describe("with valid input", () => {
+      it("should response with HTTP 201", (done) => {
+        let userData = {
+          username: "kokodeh",
+          email: "hansdeh@gmail.com",
+          description: "this is my personal space",
+        };
 
-    it("should response with HTTP 201", (done) => {
-      let userData = {
-        username: "kokodeh",
-        email: "hansdeh@gmail.com",
-        description: "this is my personal space",
-      };
-
-      chai
-        .request(server)
-        .post(user_path)
-        .send(userData)
-        .end((err, res) => {
-          expect(res.statusCode).to.equals(201);
-          done();
-        });
+        chai
+          .request(server)
+          .post(user_path)
+          .send(userData)
+          .end((err, res) => {
+            expect(res.statusCode).to.equals(201);
+            done();
+          });
+      });
     });
+    describe("with invalid input", () => {
+      it("should response with HTTP 400 due duplicate input", (done) => {
+        let userData = {
+          username: "kokohan",
+          email: "hans@gmail.com",
+          description: "this is my personal space",
+        };
 
-    it("should response with HTTP 400", (done) => {
-      let userData = {
-        username: "kokohan",
-        email: "hans@gmail.com",
-        description: "this is my personal space",
-      };
+        chai
+          .request(server)
+          .post(user_path)
+          .send(userData)
+          .end((err, res) => {
+            expect(res.statusCode).to.equals(400);
+            done();
+          });
+      });
 
-      chai
-        .request(server)
-        .post(user_path)
-        .send(userData)
-        .end((err, res) => {
-          expect(res.statusCode).to.equals(400);
-          done();
-        });
-    });
+      it("should response with HTTP 400 when email empty", (done) => {
+        let userData = {
+          username: "kokohan",
+          email: null,
+          description: "this is my personal space",
+        };
 
-    it("should response with HTTP 400 when email empty", (done) => {
-      let userData = {
-        username: "kokohan",
-        email: null,
-        description: "this is my personal space",
-      };
-
-      chai
-        .request(server)
-        .post(user_path)
-        .send(userData)
-        .end((err, res) => {
-          expect(res.statusCode).to.equals(400);
-          done();
-        });
+        chai
+          .request(server)
+          .post(user_path)
+          .send(userData)
+          .end((err, res) => {
+            expect(res.statusCode).to.equals(400);
+            done();
+          });
+      });
     });
   });
 });
