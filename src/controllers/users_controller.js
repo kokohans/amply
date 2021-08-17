@@ -39,7 +39,7 @@ const insert_user = (req, res) => {
   });
 };
 
-const find_one_user = (req, res) => {
+const get_one_user = (req, res) => {
   let uid = req.params["uid"];
 
   User.findById(uid, (err, user) => {
@@ -52,7 +52,7 @@ const find_one_user = (req, res) => {
 };
 
 router.get("/", get_users);
-router.get("/:uid", find_one_user);
+router.get("/:uid", get_one_user);
 router.post("/", insert_user);
 
 module.exports = router;
