@@ -49,7 +49,7 @@ const get_one_user = (req, res) => {
     if (err) {
       return res.status(404).json({ message: "not found", err: true });
     } else {
-      return res.status(200).json({ message: user, err: false });
+      return res.status(200).json({ message: user, err: null });
     }
   });
 };

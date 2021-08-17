@@ -79,7 +79,7 @@ describe("User Controller", () => {
 
       it("should contain message on body", () => {
         expect(response.body["message"]).to.not.undefined;
-        expect(response.body["err"]).to.be.false;
+        expect(response.body["err"]).to.be.null;
       });
     });
 
