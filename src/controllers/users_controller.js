@@ -34,7 +34,10 @@ const insert_user = (req, res) => {
         err: true,
       });
     } else {
-      return res.status(201).json(res_query);
+      return res.status(201).json({
+        message: res_query,
+        err: null,
+      });
     }
   });
 };

@@ -123,6 +123,7 @@ describe("User Controller", () => {
           .send(userData)
           .end((err, res) => {
             expect(res.statusCode).to.equals(201);
+            expect(res.body["err"]).to.be.null;
             done();
           });
       });
