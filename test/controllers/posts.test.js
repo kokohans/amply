@@ -10,11 +10,13 @@ const Post = require("../../src/models/post_model");
 let server = require("../../src/app");
 
 describe("Post Controller", () => {
-  before((done) => {
+  let uid = "";
+  let post_id = "";
+
+  before(async () => {
     User.deleteMany({});
     Post.deleteMany({});
 
-    let uid = "";
     let user_data = {
       username: "kokohan_post",
       email: "hans_post@gmail.com",
@@ -22,22 +24,20 @@ describe("Post Controller", () => {
     };
 
     let new_user = new User(user_data);
-    new_user.save((err, user) => {
-      uid = user["_id"];
+    let user = await new_user.save();
+    uid = user["_id"];
 
-      let post_data = {
-        body: "this is hans's tweet",
-        comments: [],
-        user: uid,
-        created_at: new Date().toISOString(),
-      };
+    let post_data = {
+      body: "this is hans's tweet",
+      comments: [],
+      user: uid,
+      created_at: new Date().toISOString(),
+    };
 
-      let new_post = new Post(post_data);
+    let new_post = new Post(post_data);
 
-      new_post.save((err) => {
-        done();
-      });
-    });
+    let post = await new_post.save();
+    post_id = post["_id"];
   });
 
   after(async () => {
@@ -67,6 +67,31 @@ describe("Post Controller", () => {
     it("should return response with JSON", () => {
       expect(response.body).to.have.property("message");
       expect(response.body["message"]).to.be.an.an("array");
+      expect(response.body["err"]).to.be.null;
+    });
+  });
+
+  describe("GET /api/v1/posts/:post_id", () => {
+    let post_url = "/api/v1/posts/";
+    let response, error;
+
+    before((done) => {
+      chai
+        .request(server)
+        .get(post_url + post_id)
+        .end((err, res) => {
+          error = err;
+          response = res;
+          done();
+        });
+    });
+
+    it("should return 200 OK", () => {
+      expect(response.statusCode).to.equals(200);
+    });
+
+    it("should return response with JSON", () => {
+      expect(response.body).to.have.property("message");
       expect(response.body["err"]).to.be.null;
     });
   });
