@@ -28,7 +28,41 @@ const get_one_post = (req, res) => {
   });
 };
 
+const insert_post = (req, res) => {
+  let post_body = req.body["body"];
+  let user_id = req.body["user"];
+  let created_at = new Date().toISOString();
+
+  if (post_body.length > 1000) {
+    return res.status(400).json({
+      message: "exceed 1000 character",
+      err: true,
+    });
+  }
+
+  let new_post = new Post({
+    body: post_body,
+    user: user_id,
+    created_at: created_at,
+  });
+
+  new_post.save((err, res_query) => {
+    if (err) {
+      return res.status(400).json({
+        message: err,
+        err: true,
+      });
+    } else {
+      return res.status(201).json({
+        message: res_query,
+        err: null,
+      });
+    }
+  });
+};
+
 router.get("/", get_posts);
 router.get("/:post_id", get_one_post);
+router.post("/", insert_post);
 
 module.exports = router;
