@@ -42,7 +42,7 @@ describe("Post Controller", () => {
 
   after(async () => {
     await User.deleteMany({});
-    //await Post.deleteMany({});
+    await Post.deleteMany({});
   });
 
   describe("GET /api/v1/posts", () => {
