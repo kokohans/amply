@@ -73,26 +73,53 @@ describe("Post Controller", () => {
 
   describe("GET /api/v1/posts/:post_id", () => {
     let post_url = "/api/v1/posts/";
-    let response, error;
 
-    before((done) => {
-      chai
-        .request(server)
-        .get(post_url + post_id)
-        .end((err, res) => {
-          error = err;
-          response = res;
-          done();
-        });
+    describe("with valid input", () => {
+      let response, error;
+
+      before((done) => {
+        chai
+          .request(server)
+          .get(post_url + post_id)
+          .end((err, res) => {
+            error = err;
+            response = res;
+            done();
+          });
+      });
+
+      it("should return 200 OK", () => {
+        expect(response.statusCode).to.equals(200);
+      });
+
+      it("should return response with JSON", () => {
+        expect(response.body).to.have.property("message");
+        expect(response.body["err"]).to.be.null;
+      });
     });
 
-    it("should return 200 OK", () => {
-      expect(response.statusCode).to.equals(200);
-    });
+    describe("with invalid input", () => {
+      let response, error;
 
-    it("should return response with JSON", () => {
-      expect(response.body).to.have.property("message");
-      expect(response.body["err"]).to.be.null;
+      before((done) => {
+        chai
+          .request(server)
+          .get(post_url + "00000000000000")
+          .end((err, res) => {
+            error = err;
+            response = res;
+            done();
+          });
+      });
+
+      it("should return 404 NOT FOUND", () => {
+        expect(response.statusCode).to.equals(404);
+      });
+
+      it("should contain err with true", () => {
+        expect(response.body).to.have.property("err");
+        expect(response.body["err"]).to.be.true;
+      });
     });
   });
 
