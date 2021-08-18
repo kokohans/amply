@@ -17,9 +17,27 @@ const get_users = (req, res) => {
 };
 
 const insert_user = (req, res) => {
-  let username = req.body["username"];
-  let email = req.body["email"];
-  let description = req.body["description"];
+  let username;
+  let email;
+  let description;
+  try {
+    username = req.body["username"];
+    email = req.body["email"];
+    description = req.body["description"];
+
+    if (username == undefined || username == null) {
+      throw new Error("missing username");
+    }
+
+    if (email == undefined || email == null) {
+      throw new Error("missing email");
+    }
+  } catch (err) {
+    return res.status(400).json({
+      message: err,
+      err: true,
+    });
+  }
 
   new_user = new User({
     username: username,

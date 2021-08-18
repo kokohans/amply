@@ -162,6 +162,16 @@ describe("User Controller", () => {
             done();
           });
       });
+
+      it("should response with HTTP 400 when username or email mission on body req", (done) => {
+        chai
+          .request(server)
+          .post(user_path)
+          .end((err, res) => {
+            expect(res.statusCode).to.equals(400);
+            done();
+          });
+      });
     });
   });
 });
