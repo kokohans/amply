@@ -25,16 +25,23 @@ const insert_user = (req, res) => {
     email = req.body["email"];
     description = req.body["description"];
 
+    if (
+      (username == undefined || username == null) &&
+      (email == undefined || email == null)
+    ) {
+      throw "missing username & email";
+    }
+
     if (username == undefined || username == null) {
-      throw new Error("missing username");
+      throw "missing username";
     }
 
     if (email == undefined || email == null) {
-      throw new Error("missing email");
+      throw "missing email";
     }
-  } catch (err) {
+  } catch (e) {
     return res.status(400).json({
-      message: err,
+      message: e,
       err: true,
     });
   }

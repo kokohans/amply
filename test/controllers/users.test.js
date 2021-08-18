@@ -163,11 +163,46 @@ describe("User Controller", () => {
           });
       });
 
-      it("should response with HTTP 400 when username or email mission on body req", (done) => {
+      it("should response with HTTP 400 when username missing on body req", (done) => {
+        let userData = {
+          email: "hans@gmail.com",
+          description: "this is my personal space",
+        };
+
+        chai
+          .request(server)
+          .post(user_path)
+          .send(userData)
+          .end((err, res) => {
+            expect(res.body["message"]).to.eq("missing username");
+            expect(res.statusCode).to.equals(400);
+            done();
+          });
+      });
+
+      it("should response with HTTP 400 when email missing on body req", (done) => {
+        let userData = {
+          username: "kokohan",
+          description: "this is my personal space",
+        };
+
+        chai
+          .request(server)
+          .post(user_path)
+          .send(userData)
+          .end((err, res) => {
+            expect(res.body["message"]).to.eq("missing email");
+            expect(res.statusCode).to.equals(400);
+            done();
+          });
+      });
+
+      it("should response with HTTP 400 when email and username missing on body req", (done) => {
         chai
           .request(server)
           .post(user_path)
           .end((err, res) => {
+            expect(res.body["message"]).to.eq("missing username & email");
             expect(res.statusCode).to.equals(400);
             done();
           });
