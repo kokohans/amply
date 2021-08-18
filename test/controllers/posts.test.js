@@ -181,10 +181,27 @@ describe("Post Controller", () => {
     });
 
     describe("with invalid input", () => {
-      it("should return HTTP 400", (done) => {
+      it("should return HTTP 400 when boy is null", (done) => {
         let post_data = {
           body: null,
           user: uid,
+        };
+
+        chai
+          .request(server)
+          .post(post_path)
+          .send(post_data)
+          .end((err, res) => {
+            expect(res.statusCode).to.equals(400);
+            expect(res.body["err"]).to.be.true;
+            done();
+          });
+      });
+
+      it("should return HTTP 400 when boy is null", (done) => {
+        let post_data = {
+          body: "this is hans's tweet",
+          user: "00000000000000000",
         };
 
         chai
