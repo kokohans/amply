@@ -181,7 +181,7 @@ describe("Post Controller", () => {
     });
 
     describe("with invalid input", () => {
-      it("should return HTTP 400 when boy is null", (done) => {
+      it("should return HTTP 400 when body is null", (done) => {
         let post_data = {
           body: null,
           user: uid,
@@ -198,7 +198,7 @@ describe("Post Controller", () => {
           });
       });
 
-      it("should return HTTP 400 when boy is null", (done) => {
+      it("should return HTTP 400 when body is null", (done) => {
         let post_data = {
           body: "this is hans's tweet",
           user: "00000000000000000",
