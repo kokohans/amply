@@ -123,7 +123,7 @@ describe("Post Controller", () => {
     });
   });
 
-  describe("POST /api/v1/users", () => {
+  describe("POST /api/v1/posts", () => {
     const post_path = "/api/v1/posts";
 
     describe("with valid input", () => {
