@@ -33,15 +33,24 @@ const insert_post = (req, res) => {
   let user_id = req.body["user"];
   let created_at = new Date().toISOString();
 
-  if (!post_body || post_body.trim() == "") {
+  try {
+    post_body = req.body["body"];
+    user_id = req.body["user"];
+
+    if (!post_body || post_body.trim() == "") {
+      throw "missing body or empty body";
+    }
+
+    if (post_body.length > 1000) {
+      throw "exceed 1000 character";
+    }
+
+    if (!user_id || user_id == null) {
+      throw "empty user id";
+    }
+  } catch (e) {
     return res.status(400).json({
-      message: "empty body",
-      err: true,
-    });
-  }
-  if (post_body.length > 1000) {
-    return res.status(400).json({
-      message: "exceed 1000 character",
+      message: e,
       err: true,
     });
   }

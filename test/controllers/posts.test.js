@@ -198,7 +198,7 @@ describe("Post Controller", () => {
           });
       });
 
-      it("should return HTTP 400 when body is null", (done) => {
+      it("should return HTTP 400 when invalid user id", (done) => {
         let post_data = {
           body: "this is hans's tweet",
           user: "00000000000000000",
@@ -208,6 +208,49 @@ describe("Post Controller", () => {
           .request(server)
           .post(post_path)
           .send(post_data)
+          .end((err, res) => {
+            expect(res.statusCode).to.equals(400);
+            expect(res.body["err"]).to.be.true;
+            done();
+          });
+      });
+
+      it("should return HTTP 400 when missing body on request", (done) => {
+        let post_data = {
+          user: uid,
+        };
+
+        chai
+          .request(server)
+          .post(post_path)
+          .send(post_data)
+          .end((err, res) => {
+            expect(res.statusCode).to.equals(400);
+            expect(res.body["err"]).to.be.true;
+            done();
+          });
+      });
+
+      it("should return HTTP 400 when missing user on request", (done) => {
+        let post_data = {
+          body: "this is hans's tweet",
+        };
+
+        chai
+          .request(server)
+          .post(post_path)
+          .send(post_data)
+          .end((err, res) => {
+            expect(res.statusCode).to.equals(400);
+            expect(res.body["err"]).to.be.true;
+            done();
+          });
+      });
+
+      it("should return HTTP 400 when missing user & body on request", (done) => {
+        chai
+          .request(server)
+          .post(post_path)
           .end((err, res) => {
             expect(res.statusCode).to.equals(400);
             expect(res.body["err"]).to.be.true;
