@@ -29,8 +29,8 @@ const get_one_post = (req, res) => {
 };
 
 const insert_post = (req, res) => {
-  let post_body = req.body["body"];
-  let user_id = req.body["user"];
+  let post_body;
+  let user_id;
   let created_at = new Date().toISOString();
 
   try {
